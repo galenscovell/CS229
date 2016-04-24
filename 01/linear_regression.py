@@ -10,6 +10,9 @@ import seaborn as sns
 sns.set_style('white')
 
 
+ITERATIONS = 1500  # Number of iterations to use for gradient descent
+ALPHA = 0.01       # Learning rate: how big steps are, larger is more aggressive
+
 
 def scatterplot(x, y):
     """
@@ -19,7 +22,7 @@ def scatterplot(x, y):
     :param y: y values
     :type  y: 2d ndarray [[y-val], [y-val], ...]
     """
-    plt.figure(figsize=(12, 8), dpi=80)
+    plt.figure(figsize=(14, 8), dpi=80)
     plt.scatter(x[:, 1], y, s=30, c='r', marker='x', linewidths=1)
     plt.grid(True)
     plt.xlim(4, 24)
@@ -46,45 +49,39 @@ def compute_cost(x, y, theta=[[0], [0]]):
     return j
 
 
-def gradient_descent(x, y, theta=[[0], [0]], alpha=0.01, iter_num=1500):
+def gradient_descent(x, y, theta=[[0], [0]]):
     """
     Minimize cost using gradient descent.
-    :param        x: x values
-    :type         x: 2d ndarray [[1., x-val], [1., x-val], ...]
-    :param        y: y values
-    :type         y: 2d ndarray [[y-val], [y-val], ...]
-    :param    theta: starting theta values
-    :type     theta: 2d ndarray [[theta0 float], [theta1 float]]
-    :param    alpha: 
-    :type     alpha: float
-    :param iter_num: number of iterations for gradient descent
-    :type  iter_num: int
+    :param     x: x values
+    :type      x: 2d ndarray [[1., x-val], [1., x-val], ...]
+    :param     y: y values
+    :type      y: 2d ndarray [[y-val], [y-val], ...]
+    :param theta: starting theta values
+    :type  theta: 2d ndarray [[theta0 float], [theta1 float]]
     :return: tuple, theta 2d array and j_history array
     """
     m = y.size
-    j_history = np.zeros(iter_num)
-    for i in np.arange(iter_num):
+    j_history = np.zeros(ITERATIONS)  # Make list of 0's length of ITERATIONS
+    for i in np.arange(ITERATIONS):
         h = x.dot(theta)
-        theta = theta - alpha * (1 / m) * (x.T.dot(h - y))
+        theta = theta - ALPHA * (1 / m) * (x.T.dot(h - y))
         j_history[i] = compute_cost(x, y, theta)
     return theta, j_history
 
 
-def plot_costs(j_history, iter_num=1500):
+def plot_costs(j_history):
     """
     Plot line of costs calculated in gradient descent (J's).
     :param j_history: costs calculated from descent
     :type  j_history: list of floats
-    :param  iter_num: number of iterations for gradient descent
-    :type   iter_num: int
     """
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(14, 8))
     plt.plot(range(len(j_history)), j_history)
     plt.grid(True)
     plt.title('J (Cost)')
     plt.xlabel('Iteration')
     plt.ylabel('Cost function')
-    plt.xlim([0, 1.05 * iter_num])
+    plt.xlim([0, 1.05 * ITERATIONS])
     plt.ylim([4, 7])
     plt.show()
     plt.close()
@@ -105,9 +102,9 @@ def plot_descent(x, y, theta):
     xx = np.arange(5, 23)
     yy = theta[0] + theta[1] * xx
 
-    plt.figure(figsize=(12, 8), dpi=80)
+    plt.figure(figsize=(14, 8), dpi=80)
     plt.scatter(x[:, 1], y, s=30, c='r', marker='x', linewidths=1)
-    plt.plot(xx, yy, label='Linear Regression (Gradient Descent)')
+    plt.plot(xx, yy, label='Hypothesis: h(x) = {0:.2f} + {1:.2f}x'.format(float(theta[0]), float(theta[1])))
 
     plt.grid(True)
     plt.xlim(4, 24)  # Extend plot slightly beyond data bounds
