@@ -62,11 +62,11 @@ def gradient_descent(x, y, theta=[[0], [0]]):
     :return: tuple, theta 2d array and j_history array
     """
     m = y.size
-    j_history = np.zeros(ITERATIONS)  # Make list of 0's length of ITERATIONS
-    for i in np.arange(ITERATIONS):
+    j_history = []
+    for i in range(ITERATIONS):
         h = x.dot(theta)
-        theta = theta - ALPHA * (1 / m) * (x.T.dot(h - y))
-        j_history[i] = compute_cost(x, y, theta)
+        theta = theta - (ALPHA / m) * (x.T.dot(h - y))
+        j_history.append(compute_cost(x, y, theta))
     return theta, j_history
 
 
