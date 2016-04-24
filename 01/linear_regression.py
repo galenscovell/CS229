@@ -6,6 +6,7 @@ Linear Regression with one variable
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 import seaborn as sns
 sns.set_style('white')
 
@@ -127,6 +128,38 @@ def make_prediction(theta, value):
     return theta.T.dot([1, value]) * 10000
 
 
+def plot_3d(x, y):
+    """
+    Plot x vs y vs z (cost, j value) 3D plot.
+    :param     x: x values
+    :type      x: 2d ndarray [[1., x-val], [1., x-val], ...]
+    :param     y: y values
+    :type      y: 2d ndarray [[y-val], [y-val], ...]
+    """
+    # Create grid coordinates
+    x_axis = np.linspace(-10, 10, 50)
+    y_axis = np.linspace(-1, 4, 50)
+    xx, yy = np.meshgrid(x_axis, y_axis, indexing='xy')
+    z = np.zeros((x_axis.size, y_axis.size))
+
+    # Calculate z-values based on grid coefficients
+    for (i, j), v in np.ndenumerate(z):
+        z[i, j] = compute_cost(x, y, theta=[[xx[i, j]], [yy[i, j]]])
+
+    # Construct plot
+    fig = plt.figure(figsize=(12, 10))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(xx, yy, z, rstride=1, cstride=1, alpha=0.6, cmap=plt.cm.jet)
+    ax.set_zlabel('Cost')
+    ax.set_zlim(z.min(), z.max())
+    ax.view_init(elev=15, azim=230)
+    plt.title('X vs. Y vs. Cost')
+    ax.set_xlabel(r'$\theta_0$', fontsize=17)
+    ax.set_ylabel(r'$\theta_1$', fontsize=17)
+    plt.show()
+    plt.close()
+
+
 
 if __name__ == '__main__':
     # Read in data and visualize
@@ -148,4 +181,6 @@ if __name__ == '__main__':
     # Make some predictions
     print('Predicted profit for 3.5k population: {0}'.format(make_prediction(theta, 3.5)))
     print('Predicted profit for 7k population: {0}'.format(make_prediction(theta, 7)))
+
+    plot_3d(x, y)
 
