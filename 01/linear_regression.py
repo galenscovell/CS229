@@ -15,9 +15,9 @@ def scatterplot(x, y):
     """
     Make scatterlot from initial data.
     :param x: x values
-    :type  x: ndarray, 2d array [[1., x-val], [1., xval], etc.]
+    :type  x: 2d ndarray [[1., x-val], [1., x-val], ...]
     :param y: y values
-    :type  y: ndarray, 2d array [[y-val], [y-val], etc.]
+    :type  y: 2d ndarray [[y-val], [y-val], ...]
     """
     plt.figure(figsize=(12, 8), dpi=80)
     plt.scatter(x[:, 1], y, s=30, c='r', marker='x', linewidths=1)
@@ -33,15 +33,14 @@ def compute_cost(x, y, theta=[[0], [0]]):
     """
     Compute cost J from current theta value.
     :param     x: x values
-    :type      x: ndarray, 2d array [[1., x-val], [1., xval], etc.]
+    :type      x: 2d ndarray [[1., x-val], [1., x-val], ...]
     :param     y: y values
-    :type      y: ndarray, 2d array [[y-val], [y-val], etc.]
-    :param theta: 
-    :type  theta: ndarray, 2d array [[x-val, y-val], etc.]
+    :type      y: 2d ndarray [[y-val], [y-val], ...]
+    :param theta: current theta value to use in computation
+    :type  theta: 2d ndarray [[theta0 float], [theta1 float]]
     :return: float cost
     """
     m = y.size
-    j = 0
     h = x.dot(theta)
     j = 1 / (2 * m) * np.sum(np.square(h - y))
     return j
@@ -50,17 +49,17 @@ def compute_cost(x, y, theta=[[0], [0]]):
 def gradient_descent(x, y, theta=[[0], [0]], alpha=0.01, iter_num=1500):
     """
     Minimize cost using gradient descent.
-    :param x: x values
-    :type  x: ndarray, 2d array [[1., x-val], [1., xval], etc.]
-    :param y: y values
-    :type  y: ndarray, 2d array [[y-val], [y-val], etc.]
-    :param    theta: 
-    :type     theta: ndarray, 2d array [[x-val, y-val], etc.]
+    :param        x: x values
+    :type         x: 2d ndarray [[1., x-val], [1., x-val], ...]
+    :param        y: y values
+    :type         y: 2d ndarray [[y-val], [y-val], ...]
+    :param    theta: starting theta values
+    :type     theta: 2d ndarray [[theta0 float], [theta1 float]]
     :param    alpha: 
     :type     alpha: float
     :param iter_num: number of iterations for gradient descent
     :type  iter_num: int
-    :return: tuple theta and j_history
+    :return: tuple, theta 2d array and j_history array
     """
     m = y.size
     j_history = np.zeros(iter_num)
@@ -95,14 +94,16 @@ def plot_descent(x, y, theta):
     """
     Plot gradient descent thetas as line over dataset scatterplot.
     :param     x: x values
-    :type      x: ndarray, 2d array [[1., x-val], [1., xval], etc.]
+    :type      x: 2d ndarray [[1., x-val], [1., x-val], ...]
     :param     y: y values
-    :type      y: ndarray, 2d array [[y-val], [y-val], etc.]
-    :param theta: 
-    :type  theta: ndarray, 2d array [[x-val, y-val], etc.]
+    :type      y: 2d ndarray [[y-val], [y-val], ...]
+    :param theta: calculated theta values
+    :type  theta: 2d ndarray [[theta0 float], [theta1 float]]
     """
-    xx = np.arange(5, 23)          # 
-    yy = theta[0] + theta[1] * xx  # 
+    # Compute prediction for each point in xx range using calculated theta values
+    # h(x) = theta0 + theta1 * x
+    xx = np.arange(5, 23)
+    yy = theta[0] + theta[1] * xx
 
     plt.figure(figsize=(12, 8), dpi=80)
     plt.scatter(x[:, 1], y, s=30, c='r', marker='x', linewidths=1)
@@ -120,9 +121,8 @@ def plot_descent(x, y, theta):
 def make_prediction(theta, value):
     """
     Make a prediction based on gradient descent theta results.
-    :param theta: Calculated theta from gradient descent
-    :param theta: 
-    :type  theta: ndarray, 2d array [[x-val, y-val], etc.]
+    :param theta: calculated theta values
+    :type  theta: 2d ndarray [[theta0 float], [theta1 float]]
     :param value: Given value to predict based off of
     :type  value: int
     :return: float prediction
@@ -141,7 +141,7 @@ if __name__ == '__main__':
                                                   #     list of lists, each inner list
                                                   #         is [1., column val]
     y = np.c_[data[:, 1]]  # list of lists, each inner list is single entry [2nd column val]
-    # scatterplot(x, y)
+    scatterplot(x, y)
 
     # Gradient descent and visualize
     theta, j_history = gradient_descent(x, y)
