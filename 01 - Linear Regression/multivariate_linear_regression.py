@@ -11,10 +11,8 @@ import statistics
 sns.set_style('white')
 
 
-
-ITERATIONS = 100
+ITERATIONS = 200
 ALPHA = 0.1
-
 
 
 def compute_cost(x, y, theta=[[0], [0], [0]]):
@@ -116,12 +114,12 @@ if __name__ == '__main__':
 
     query = scale_query_features(avg_std, 1650, 3)
     print('Prediction of house price with 1650sqft and 3 bedrooms: $%0.2f' % float(
-        predict(theta, query[0], query[0])))
+        predict(theta, query[0], query[1])))
 
     query = scale_query_features(avg_std, 670, 1)
     print('Prediction of house price with 670sqft and 1 bedrooms: $%0.2f' % float(
-        predict(theta, query[0], query[0])))
+        predict(theta, query[0], query[1])))
 
     query = scale_query_features(avg_std, 1000, 2)
     print('Prediction of house price with 1000sqft and 2 bedrooms: $%0.2f' % float(
-        predict(theta, query[0], query[0])))
+        predict(theta, query[0], query[1])))
