@@ -1,5 +1,5 @@
 """
-Linear Regression with one variable
+Linear Regression with one variable.
 
 @author GalenS <galen.scovell@gmail.com>
 """
@@ -99,7 +99,7 @@ def plot_descent(x, y, theta):
     :type  theta: 2d ndarray [[theta0 float], [theta1 float]]
     """
     # Compute prediction for each point in xx range using calculated theta values
-    # h(x) = theta0 + theta1 * x
+    # h(x) = (theta0 * x0) + (theta1 * x1)
     xx = np.arange(5, 23)
     yy = theta[0] + theta[1] * xx
 
@@ -125,7 +125,8 @@ def make_prediction(theta, value):
     :type  value: int
     :return: float prediction
     """
-    return theta.T.dot([1, value]) * 10000
+    # x0 is always 1.0 (theta0 has no coefficient in hypothesis equation)
+    return theta.T.dot([1.0, value]) * 10000
 
 
 def plot_3d(x, y):
